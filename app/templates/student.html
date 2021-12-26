@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_student', student_id=student.id) }}">Update</a>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('add_fees', student_id=student.id) }}">Add Fees</a>
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+          </div>
+        </div>
+        <p><label>Enrollment Number: </label> <span>{{ student.enrollment_number }}</span></p>
+        <p><label>Student Name: </label> <span>{{ student.student_name }}</span></p>
+        <p><label>Father Name: </label> <span>{{ student.father_name }}</span></p>
+        <p><label>Contact Number: </label> <span>{{ student.contact_number }}</span></p>
+        <p><label>Fees Details: </label> 
+            {% if student_fees %}
+                <table class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Fees</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for sf in student_fees %}
+                        <tr>
+                            <th>{{ loop.index}}.</th>
+                            <th>{{ sf.fees }} INR</th>
+                            <th>{{ sf.date.strftime('%d-%m-%Y') }}</th>
+                            <th><button type="button" class="btn btn-danger btn-sm m-1" onclick="delete_student_fees('{{student.id}}', '{{sf.id}}')">Delete</button></th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <span>No Fees added yet!</span>
+            {% endif %}
+        </p>
+      
+    </div>
+  </article>
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Student?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('delete_student', student_id=student.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteFeeModal" tabindex="-1" role="dialog" aria-labelledby="deleteFeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Student Fee?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block js_content %}
+    <script>
+    // $(document).ready(function () {
+        function delete_student_fees(student_id, fee_id){
+            $('#deleteFeeModal form').attr('action', '/delete_student_fee/'+student_id+'/'+fee_id);
+            $('#deleteFeeModal').modal('show');
+        }
+    // });
+    </script>
+{% endblock js_content %}
