@@ -9,11 +9,15 @@
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
           </div>
         </div>
-        <p><label>Enrollment Number: </label> <span>{{ student.enrollment_number }}</span></p>
-        <p><label>Student Name: </label> <span>{{ student.student_name }}</span></p>
-        <p><label>Father Name: </label> <span>{{ student.father_name }}</span></p>
-        <p><label>Contact Number: </label> <span>{{ student.contact_number }}</span></p>
-        <p><label>Fees Details: </label> 
+
+        <p><label><b>Student Name: </b></label> <span>{{ student.student_name }}</span></p>
+        <p><label><b>Father Name: </b></label> <span>{{ student.father_name }}</span></p>
+        <p><label><b>Contact Number: </b></label> <span>{{ student.contact_number }}</span></p>
+        <p><label><b>Course taken: </b></label> <span>{{ student.course_name }}</span></p>
+        <p><label><b>Total Fees: </b></label> <span>{{ student.total_fees }} INR</span></p>
+        <p><label><b>Fees Paid: </b></label> <span>{{ fees_paid_till }} INR</span></p>
+        <p><label><b>Remaining Fees: </b></label> <span>{{ student.total_fees - fees_paid_till }} INR</span></p>
+        <p><label><b>Fees Details: </b></label> 
             {% if student_fees %}
                 <table class="table table-striped table-bordered" style="width:100%">
                     <thead>
@@ -25,14 +29,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for sf in student_fees %}
-                        <tr>
-                            <th>{{ loop.index}}.</th>
-                            <th>{{ sf.fees }} INR</th>
-                            <th>{{ sf.date.strftime('%d-%m-%Y') }}</th>
-                            <th><button type="button" class="btn btn-danger btn-sm m-1" onclick="delete_student_fees('{{student.id}}', '{{sf.id}}')">Delete</button></th>
-                        </tr>
-                    {% endfor %}
+                    {% if student_fees %}
+                      {% for sf in student_fees %}
+                          <tr>
+                              <th>{{ loop.index}}.</th>
+                              <th>{{ sf.fees }} INR</th>
+                              <th>{{ sf.date.strftime('%d-%m-%Y') }}</th>
+                              <th><button type="button" class="btn btn-danger btn-sm m-1" onclick="delete_student_fees('{{student.id}}', '{{sf.id}}')">Delete</button></th>
+                          </tr>
+                      {% endfor %}
+                    {% else %}
+                      <tr>
+                        <th colspan="100%">No Fees paid yet!</th>
+                      </tr>
+                    {% endif %}
                     </tbody>
                 </table>
             {% else %}

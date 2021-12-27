@@ -24,15 +24,17 @@ class User(db.Model, UserMixin):
 
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    enrollment_number = db.Column(db.String(100), nullable=False)
+    # enrollment_number = db.Column(db.String(100), nullable=False)
     student_name = db.Column(db.String(100), nullable=False)
     father_name = db.Column(db.String(100), nullable=False)
     contact_number = db.Column(db.String(100), nullable=False)
     created_on = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    course_name = db.Column(db.String(100), nullable=False)
+    total_fees = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"Student('{self.enrollment_number}', '{self.student_name}')"
+        return f"Student('{self.id}', '{self.student_name}')"
 
 class StudentFees(db.Model):
     id = db.Column(db.Integer, primary_key=True)

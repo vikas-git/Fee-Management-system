@@ -57,10 +57,12 @@ class UpdateAccountForm(FlaskForm):
 
 
 class StudentForm(FlaskForm):
-    enrollment_number = StringField('Enrollment Number', validators=[DataRequired()])
+    # enrollment_number = StringField('Enrollment Number', validators=[DataRequired()])
     student_name = StringField('Student Name', validators=[DataRequired()])
     father_name = StringField('Father Name', validators=[DataRequired()])
     contact_number = StringField('Contact Number', validators=[DataRequired()])
+    course_name = StringField('Course Name', validators=[DataRequired()])
+    total_fees = StringField('Total Fees', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class FeesForm(FlaskForm):

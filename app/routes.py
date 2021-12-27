@@ -93,10 +93,12 @@ def new_student():
     form = StudentForm()
     if form.validate_on_submit():
         student = Student(
-            enrollment_number=form.enrollment_number.data,
+            # enrollment_number=form.enrollment_number.data,
             student_name=form.student_name.data,
             father_name=form.father_name.data,
             contact_number=form.contact_number.data,
+            course_name=form.course_name.data,
+            total_fees=form.total_fees.data,
             admin=current_user
         )
 
@@ -112,7 +114,13 @@ def new_student():
 def student(student_id):
     student = Student.query.get_or_404(student_id)
     student_fees = StudentFees.query.filter_by(student_id=student_id)
-    return render_template('student.html', student=student, student_fees=student_fees)
+
+    # calculate fees
+    fees_paid_till = 0
+    for sf in student_fees:
+        fees_paid_till += sf.fees
+
+    return render_template('student.html', student=student, student_fees=student_fees, fees_paid_till=fees_paid_till)
 
 
 @app.route("/student/<int:student_id>/update", methods=['GET', 'POST'])
