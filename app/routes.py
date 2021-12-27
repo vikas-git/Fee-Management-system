@@ -130,19 +130,23 @@ def update_student(student_id):
     
     form = StudentForm()
     if form.validate_on_submit():
-        student.enrollment_number = form.enrollment_number.data
+        # student.enrollment_number = form.enrollment_number.data
         student.student_name = form.student_name.data
         student.father_name = form.father_name.data
         student.contact_number = form.contact_number.data
+        student.course_name = form.course_name.data
+        student.total_fees = form.total_fees.data
 
         db.session.commit()
         flash('Your student has been updated!', 'success')
         return redirect(url_for('student', student_id=student.id))
     elif request.method == 'GET':
-        form.enrollment_number.data = student.enrollment_number
+        # form.enrollment_number.data = student.enrollment_number
         form.student_name.data = student.student_name
         form.father_name.data = student.father_name
         form.contact_number.data = student.contact_number
+        form.course_name.data = student.course_name
+        form.total_fees.data = student.total_fees
 
     return render_template('create_student.html', title='Update Student',
                            form=form, legend='Update Student')
